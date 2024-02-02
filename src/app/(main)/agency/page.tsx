@@ -47,7 +47,9 @@ const Page = async ({searchParams}: PageProps) => {
                 <h1 className={"text-4xl"}>
                     Create An Agency
                 </h1>
-                <AgencyDetails data={{companyEmail: authUser?.emailAddresses[0].emailAddress}}/>
+                <AgencyDetails
+                    data={{companyEmail: authUser?.emailAddresses[0].emailAddress}}
+                />
             </div>
         </div>
     );

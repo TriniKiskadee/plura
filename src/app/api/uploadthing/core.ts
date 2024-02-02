@@ -1,4 +1,4 @@
-import { createUploadthing, type FileRouter } from 'uploadthing/next'
+import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { auth } from '@clerk/nextjs'
 
 const f = createUploadthing()
@@ -12,8 +12,7 @@ const authenticateUser = () => {
 }
 
 // FileRouter for your app, can contain multiple FileRoutes
-export const ourFileRouter = {
-    // Define as many FileRoutes as you like, each with a unique routeSlug
+export const ourFileRouter = {// Define as many FileRoutes as you like, each with a unique routeSlug
     subaccountLogo: f({ image: { maxFileSize: '4MB', maxFileCount: 1 } })
         .middleware(authenticateUser)
         .onUploadComplete(() => {}),
@@ -26,6 +25,8 @@ export const ourFileRouter = {
     media: f({ image: { maxFileSize: '4MB', maxFileCount: 1 } })
         .middleware(authenticateUser)
         .onUploadComplete(() => {}),
-} satisfies FileRouter
+} satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter
+
+// TODO: 2:26:24
