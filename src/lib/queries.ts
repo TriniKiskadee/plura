@@ -254,7 +254,7 @@ export const upsertAgency = async (agency: Agency, price?: Plan) => {
                             link: `/agency/${agency.id}/launchpad`,
                         },
                         {
-                            name: 'Billing',
+                            name: 'billing',
                             icon: 'payment',
                             link: `/agency/${agency.id}/billing`,
                         },
@@ -385,4 +385,61 @@ export const upsertSubAccount = async (subAccount: SubAccount) => {
         },
     })
     return response
+}
+
+export const getUserPermissions = async (userId: string) => {
+    const response = await db.user.findUnique({
+        where: {
+            id: userId,
+        },
+        select: {
+            Permissions: {
+                include: {
+                    SubAccount: true
+                }
+            }
+        }
+    })
+
+    return response
+}
+
+export const updateUser = async (user: Partial<User>) => {
+    const response = await db.user.update({
+        where: {
+            email: user.email
+        },
+        data: {
+            ...user
+        }
+    })
+
+    await clerkClient.users.updateUserMetadata(response.id, {
+        privateMetadata: {
+            role: user.role || "SUBACCOUNT_USER"
+        },
+    })
+
+    return response
+}
+
+export const changeUserPermissions = async (permissionId: string | undefined, subAccountId: string , userEmail: string, permission: boolean) => {
+    try {
+        const response = await db.permissions.upsert({
+            where: {
+                id: permissionId
+            },
+            update: {
+                access: permission
+            },
+            create: {
+                access: permission,
+                email: userEmail,
+                subAccountId: subAccountId
+            },
+        })
+        return response
+    } catch (error) {
+        console.log("🔴 Could not change permission", error)
+    }
 }

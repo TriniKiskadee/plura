@@ -57,7 +57,7 @@ interface SubAccountDetailsProps {
     userName: string
 }
 
-const SubAccountDetails: React.FC<SubAccountDetailsProps> = ({details,agencyDetails,userId,userName}) => {
+const SubAccountDetails: React.FC<SubAccountDetailsProps> = ({details, agencyDetails,userId,userName}) => {
     const { toast } = useToast()
     const { setClose } = useModal()
     const router = useRouter()
@@ -200,7 +200,7 @@ const SubAccountDetails: React.FC<SubAccountDetailsProps> = ({details,agencyDeta
                                 name="companyPhone"
                                 render={({ field }) => (
                                     <FormItem className="flex-1">
-                                        <FormLabel>Acount Phone Number</FormLabel>
+                                        <FormLabel>Account Phone Number</FormLabel>
                                         <FormControl>
                                             <Input
                                                 placeholder="Phone"

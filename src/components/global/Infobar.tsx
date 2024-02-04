@@ -10,6 +10,7 @@ import {Role} from "@prisma/client";
 import {Card} from "@/components/ui/card";
 import {Switch} from "@/components/ui/switch";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {ModeToggle} from "@/components/global/ModeToggle";
 
 interface InfoBarProps {
     notifications: NotificationWithUser | []
@@ -47,7 +48,7 @@ const Infobar = ({notifications, role, className, subAccountId}: InfoBarProps) =
                 <UserButton afterSignOutUrl={"/"} />
                 <Sheet>
                     <SheetTrigger>
-                        <div className={"rounded-full w-8 h-8 bg-primary flex items-center justify-center text-white"}>
+                        <div className={"rounded-full w-9 h-9 bg-primary flex items-center justify-center text-white"}>
                             <Bell size={17}/>
                         </div>
                     </SheetTrigger>
@@ -106,6 +107,7 @@ const Infobar = ({notifications, role, className, subAccountId}: InfoBarProps) =
                         )}
                     </SheetContent>
                 </Sheet>
+                <ModeToggle />
             </div>
          </div>
         </>
@@ -113,5 +115,3 @@ const Infobar = ({notifications, role, className, subAccountId}: InfoBarProps) =
 };
 
 export default Infobar;
-
-// TODO: 4:32:45
