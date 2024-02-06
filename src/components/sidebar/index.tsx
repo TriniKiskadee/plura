@@ -32,7 +32,7 @@ const Sidebar = async ({id, type}: SidebarProps) => {
 
     const sidebarOpt = type === "agency"
         ? user.Agency.SidebarOption || []
-        : user.Agency.subAccount.find((subaccount: SubAccount) => subaccount.id === id)
+        : user.Agency.SubAccount.find((subaccount: SubAccount) => subaccount.id === id)
             ?.SidebarOption || []
 
     const subaccounts = user.Agency.SubAccount.filter(
