@@ -181,7 +181,7 @@ const AgencyDetails = ({ data }: Props) => {
             const response = await deleteAgency(data.id)
             toast({
                 title: 'Deleted Agency',
-                description: 'Deleted your agency and all subaccounts',
+                description: 'Deleted your agency and all all-subaccounts',
             })
             router.refresh()
         } catch (error) {

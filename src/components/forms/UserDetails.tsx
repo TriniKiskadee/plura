@@ -259,7 +259,7 @@ const UserDetails = ({type, id, subAccounts, userData}: UserDetailsProps) => {
                                         onValueChange={(value) => {
                                             if (value === 'SUBACCOUNT_USER' || value === 'SUBACCOUNT_GUEST') {
                                                 setRoleState(
-                                                    'You need to have subaccounts to assign Subaccount access to team members.'
+                                                    'You need to have all-subaccounts to assign Subaccount access to team members.'
                                                 )
                                             } else {
                                                 setRoleState('')
@@ -319,7 +319,7 @@ const UserDetails = ({type, id, subAccounts, userData}: UserDetailsProps) => {
                                         return (
                                             <div
                                                 key={subAccount.id}
-                                                className="flex flex-col items-center justify-between rounded-lg border p-4"
+                                                className="flex items-center justify-between rounded-lg border p-4"
                                             >
                                                 <div>
                                                     <p>{subAccount.name}</p>

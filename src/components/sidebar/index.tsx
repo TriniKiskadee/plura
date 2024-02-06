@@ -1,6 +1,7 @@
 import React from 'react';
 import {getAuthUserDetails} from "@/lib/queries";
 import MenuOptions from "@/components/sidebar/MenuOptions";
+import {SubAccount} from "@prisma/client";
 
 interface SidebarProps {
     id: string,
@@ -14,7 +15,7 @@ const Sidebar = async ({id, type}: SidebarProps) => {
 
     const details = type === "agency"
         ? user?.Agency
-        : user?.Agency.SubAccount.find((subaccount) => subaccount.id === id)
+        : user?.Agency.SubAccount.find((subaccount: SubAccount) => subaccount.id === id)
 
     const isWhiteLabeledAgency = user.Agency.whiteLabel
 
@@ -24,19 +25,19 @@ const Sidebar = async ({id, type}: SidebarProps) => {
 
     if(!isWhiteLabeledAgency){
         if(type === "subaccount"){
-            sideBarLogo = user?.Agency.SubAccount.find((subaccount) => subaccount.id === id)
+            sideBarLogo = user?.Agency.SubAccount.find((subaccount: SubAccount) => subaccount.id === id)
                 ?.subAccountLogo || user.Agency.agencyLogo
         }
     }
 
     const sidebarOpt = type === "agency"
         ? user.Agency.SidebarOption || []
-        : user.Agency.subAccount.find((subaccount) => subaccount.id === id)
+        : user.Agency.subAccount.find((subaccount: SubAccount) => subaccount.id === id)
             ?.SidebarOption || []
 
     const subaccounts = user.Agency.SubAccount.filter(
-        (subaccount) => user.Permissions.find(
-            (permission) => permission.subAccountId === subaccount.id && permission.access
+        (subaccount: SubAccount) => user.Permissions.find(
+            (permission: any) => permission.subAccountId === subaccount.id && permission.access
         )
     )
 

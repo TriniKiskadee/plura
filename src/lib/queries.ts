@@ -443,3 +443,44 @@ export const changeUserPermissions = async (permissionId: string | undefined, su
         console.log("🔴 Could not change permission", error)
     }
 }
+
+export const getSubAccountDetails = async (subaccountId: string) => {
+    const response = await db.subAccount.findUnique({
+        where: {
+            id: subaccountId
+        }
+    })
+
+    return response
+}
+
+export const deleteSubAccount = async (subaccountId: string) => {
+    const response = await db.subAccount.delete({
+        where: {
+            id: subaccountId
+        }
+    })
+
+    return response
+}
+
+export const deleteUser = async (userId: string) => {
+    await clerkClient.users.updateUserMetadata(userId, {
+        privateMetadata: {
+            role: undefined,
+        },
+    })
+    const deletedUser = await db.user.delete({ where: { id: userId } })
+
+    return deletedUser
+}
+
+export const getUser = async (id: string) => {
+    const user = await db.user.findUnique({
+        where: {
+            id,
+        },
+    })
+
+    return user
+}
