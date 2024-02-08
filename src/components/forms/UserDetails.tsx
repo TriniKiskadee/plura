@@ -349,5 +349,3 @@ const UserDetails = ({type, id, subAccounts, userData}: UserDetailsProps) => {
 };
 
 export default UserDetails;
-
-// TODO: 5:07:56

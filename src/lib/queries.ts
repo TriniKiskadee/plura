@@ -6,7 +6,8 @@ import {redirect} from "next/navigation";
 import {Agency, Lane, Plan, Prisma, Role, SubAccount, Tag, Ticket, User} from "@prisma/client";
 import {v4} from "uuid";
 import {z} from "zod";
-import {CreateMediaType} from "@/lib/types";
+import {CreateFunnelFormSchema, CreateMediaType, UpsertFunnelPage} from "@/lib/types";
+import {revalidatePath} from "next/cache";
 
 export const getAuthUserDetails = async () => {
     const user = await currentUser()

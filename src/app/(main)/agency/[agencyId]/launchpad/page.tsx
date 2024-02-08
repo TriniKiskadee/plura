@@ -23,7 +23,7 @@ const Page = async ({params, searchParams}: LaunchpadProps) => {
     })
     if(!agencyDetails) return
 
-    const allDetaisExist =
+    const allDetailsExist =
         agencyDetails.address &&
         agencyDetails.agencyLogo &&
         agencyDetails.city &&
@@ -80,9 +80,9 @@ const Page = async ({params, searchParams}: LaunchpadProps) => {
                                     height={50}
                                     className={"rounded-md object-contain"}
                                 />
-                                <p>Gill in all your business details</p>
+                                <p>Fill in all your business details</p>
                             </div>
-                            {allDetaisExist ? (
+                            {allDetailsExist ? (
                                 <CheckCircleIcon
                                     size={50}
                                     className={"text-primary p2 flex-shrink-0"}
