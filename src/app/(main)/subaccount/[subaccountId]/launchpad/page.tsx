@@ -94,9 +94,11 @@ const Page = async ({searchParams, params}: LaunchpadProps) => {
                                     />
                                 ) : (
                                     <Link
-                                        href={`/agency/${params.agencyId}/settings`}
+                                        href={`/subaccount/${subaccountDetails.id}/settings`}
                                         className={"bg-primary py-2 px-4 rounded-md text-white"}
-                                    >Start</Link>
+                                    >
+                                        Start
+                                    </Link>
                                 )}
 
                             </div>

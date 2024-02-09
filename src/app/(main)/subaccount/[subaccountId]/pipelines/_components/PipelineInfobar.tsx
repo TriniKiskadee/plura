@@ -37,7 +37,10 @@ const PipelineInfobar = ({pipelineId, pipelines, subaccountId,}: PipelineInfobar
     return (
         <div>
             <div className={"flex items-end gap-2"}>
-                <Popover open={open} onOpenChange={setOpen}>
+                <Popover
+                    open={open}
+                    onOpenChange={setOpen}
+                >
                     <PopoverTrigger asChild>
                         <Button
                             variant={"outline"}

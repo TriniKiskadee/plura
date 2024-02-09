@@ -1,32 +1,53 @@
 'use client'
-import React, {useEffect} from 'react'
-import {z} from 'zod'
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage,} from '@/components/ui/form'
-import {Card, CardContent, CardHeader, CardTitle,} from '@/components/ui/card'
-import {useForm} from 'react-hook-form'
-import {Pipeline} from '@prisma/client'
-import {Input} from '../ui/input'
+import React, { useEffect } from 'react'
+import { z } from 'zod'
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@/components/ui/form'
+import {
+    Card,
+    CardHeader,
+    CardTitle,
+    CardDescription,
+    CardContent,
+} from '@/components/ui/card'
+import { useForm } from 'react-hook-form'
+import { Funnel, Lane, Pipeline } from '@prisma/client'
+import { Input } from '../ui/input'
 
-import {Button} from '../ui/button'
-import Loading from '../global/Loading'
-import {CreatePipelineFormSchema} from '@/lib/types'
-import {saveActivityLogsNotification, upsertPipeline,} from '@/lib/queries'
-import {toast} from '../ui/use-toast'
-import {useModal} from '@/providers/ModalProvider'
-import {useRouter} from 'next/navigation'
-import {zodResolver} from '@hookform/resolvers/zod'
+import { Button } from '../ui/button'
+import Loading from '@/components/global/Loading'
+import { LaneFormSchema } from '@/lib/types'
+import {
+    getPipelineDetails,
+    saveActivityLogsNotification,
+    upsertFunnel,
+    upsertLane,
+    upsertPipeline,
+} from '@/lib/queries'
+import { v4 } from 'uuid'
+import { toast } from '../ui/use-toast'
+import { useModal } from '@/providers/ModalProvider'
+import { useRouter } from 'next/navigation'
+import { zodResolver } from '@hookform/resolvers/zod'
 
-interface CreatePipelineFormProps {
-    defaultData?: Pipeline
-    subAccountId: string
+interface CreateLaneFormProps {
+    defaultData?: Lane
+    pipelineId: string
 }
 
-const CreatePipelineForm: React.FC<CreatePipelineFormProps> = ({defaultData, subAccountId}) => {
-    const { data, isOpen, setOpen, setClose } = useModal()
+const LaneForm: React.FC<CreateLaneFormProps> = ({defaultData, pipelineId}) => {
+    const { setClose } = useModal()
     const router = useRouter()
-    const form = useForm<z.infer<typeof CreatePipelineFormSchema>>({
+    const form = useForm<z.infer<typeof LaneFormSchema>>({
         mode: 'onChange',
-        resolver: zodResolver(CreatePipelineFormSchema),
+        resolver: zodResolver(LaneFormSchema),
         defaultValues: {
             name: defaultData?.name || '',
         },
@@ -42,25 +63,30 @@ const CreatePipelineForm: React.FC<CreatePipelineFormProps> = ({defaultData, sub
 
     const isLoading = form.formState.isLoading
 
-    const onSubmit = async (values: z.infer<typeof CreatePipelineFormSchema>) => {
-        if (!subAccountId) return
+    const onSubmit = async (values: z.infer<typeof LaneFormSchema>) => {
+        if (!pipelineId) return
         try {
-            const response = await upsertPipeline({
+            const response = await upsertLane({
                 ...values,
                 id: defaultData?.id,
-                subAccountId: subAccountId,
+                pipelineId: pipelineId,
+                order: defaultData?.order,
             })
+
+            const d = await getPipelineDetails(pipelineId)
+            if (!d) return
 
             await saveActivityLogsNotification({
                 agencyId: undefined,
-                description: `Updates a pipeline | ${response?.name}`,
-                subaccountId: subAccountId,
+                description: `Updated a lane | ${response?.name}`,
+                subaccountId: d.subAccountId,
             })
 
             toast({
                 title: 'Success',
                 description: 'Saved pipeline details',
             })
+
             router.refresh()
         } catch (error) {
             toast({
@@ -69,14 +95,12 @@ const CreatePipelineForm: React.FC<CreatePipelineFormProps> = ({defaultData, sub
                 description: 'Could not save pipeline details',
             })
         }
-
         setClose()
     }
-
     return (
-        <Card className="w-full ">
+        <Card className="w-full">
             <CardHeader>
-                <CardTitle>Pipeline Details</CardTitle>
+                <CardTitle>Lane Details</CardTitle>
             </CardHeader>
             <CardContent>
                 <Form {...form}>
@@ -90,10 +114,10 @@ const CreatePipelineForm: React.FC<CreatePipelineFormProps> = ({defaultData, sub
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Pipeline Name</FormLabel>
+                                    <FormLabel>Lane Name</FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="Name"
+                                            placeholder="Lane Name"
                                             {...field}
                                         />
                                     </FormControl>
@@ -116,4 +140,4 @@ const CreatePipelineForm: React.FC<CreatePipelineFormProps> = ({defaultData, sub
     )
 }
 
-export default CreatePipelineForm
+export default LaneForm
