@@ -1,4 +1,9 @@
 import Image from "next/image";
+import {pricingCards} from "@/lib/constants";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {clsx} from "clsx";
+import {Check} from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
     return (
@@ -11,7 +16,7 @@ export default function Home() {
                 </p>
                 <div
                     className={'bg-gradient-to-r from-primary to-secondary-foreground text-transparent bg-clip-text relative'}>
-                    <h1 className={'text-9xl font-bold text-center md:text-300px'}>
+                    <h1 className={'text-9xl font-bold text-center md:text-[300px]'}>
                         Plura
                     </h1>
                 </div>
@@ -19,13 +24,73 @@ export default function Home() {
                     <Image
                         src={'/assets/preview.png'}
                         alt={'banner image'}
-                        width={3456}
-                        height={1976}
-                        className={'w-[1200px] rounded-t-2xl border-2 border-muted'}
+                        width={1200}
+                        height={1200}
+                        className={'rounded-t-2xl border-2 border-muted'}
                     />
-                    <div className={'bottom-0 top-[50%] bg-gradient-to-t dark:from-background left-0 right-0 absolute z-10'}>
-
-                    </div>
+                    <div className={'bottom-0 top-[50%] bg-gradient-to-t dark:from-background left-0 right-0 absolute z-10'} />
+                </div>
+            </section>
+            <section className={'flex justify-center items-center flex-col gap-4 md:!mt-20 mt-[-60px]'}>
+                <h2 className={'text-4xl text-center'}>
+                    Choose what fits your right
+                </h2>
+                <p className={'text-muted-foreground text-center'}>
+                    Our straightforward pricing plans are tailored to meet your needs. If you&apos;re not <br />
+                    ready to commit you can get started for free.
+                </p>
+                <div className={'flex justify-center gap-4 flex-wrap mt-6'}>
+                    {/*TODO: Wire up free product from stripe*/}
+                    {pricingCards.map((card, index) => (
+                        <Card
+                            key={index}
+                            className={clsx('w-[300px] flex flex-col justify-center', {
+                                'border-2 border-primary': card.title === 'Unlimited Saas'
+                            })}
+                        >
+                            <CardHeader>
+                                <CardTitle className={clsx('',{
+                                    'text-muted-foreground': card.title !== 'Unlimited Saas'
+                                })}>
+                                    {card.title}
+                                </CardTitle>
+                                <CardDescription>
+                                    {card.description}
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <span className={'text-4xl font-bold'}>
+                                    {card.price}
+                                </span>
+                                <span className={'text-muted-foreground'}>
+                                    /month
+                                </span>
+                            </CardContent>
+                            <CardFooter className={'flex flex-col items-start gap-4'}>
+                                <div>
+                                    {card.features.map((feature, index) => (
+                                        <div
+                                            key={index}
+                                            className={'flex gap-2 items-start'}
+                                        >
+                                            <Check  className={'text-muted-foreground'}/>
+                                            <p>
+                                                {feature}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                                <Link
+                                    href={`/agency?plan=${card.priceId}`}
+                                    className={clsx('w-full text-center bg-primary p-2 rounded-md', {
+                                        '!bg-muted-foreground' : card.title !== 'Unlimited Saas'
+                                    })}
+                                >
+                                    Get Started
+                                </Link>
+                            </CardFooter>
+                        </Card>
+                    ))}
                 </div>
             </section>
         </>
