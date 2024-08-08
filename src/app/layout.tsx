@@ -2,6 +2,7 @@ import type {Metadata} from "next";
 import {DM_Sans} from "next/font/google";
 import "./globals.css";
 import {ThemeProvider} from "@/providers/theme-provider";
+import {Toaster} from "@/components/ui/toaster";
 
 const font = DM_Sans({subsets: ["latin"]});
 
@@ -21,6 +22,7 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
                     disableTransitionOnChange
                 >
                     {children}
+                    <Toaster />
                 </ThemeProvider>
             </body>
         </html>
